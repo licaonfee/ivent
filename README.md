@@ -34,7 +34,8 @@ import (
 var logger *ivent.Logger
 
 func init(){
-    logger = log.NewLogger(log.WithStream(stream.NewNoop()))
+    //By default all clients use stream.Noop
+    logger = log.NewLogger()
 }
 
 func DoSomethingWithIvent(){
@@ -67,6 +68,5 @@ func main(){
 
     //Prints:"Trace : I do the thing"
     lib.DoSomethingWithIvent()
-
 }
 ```
