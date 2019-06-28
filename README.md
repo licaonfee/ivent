@@ -11,7 +11,7 @@ Logs free debug library
 
 ## Motivation
 
-Diferent libraries choose a logging library for debug an trazability purposes. ivent pretends to decouple this logic
+Diferent libraries choose a logging library for debug and traceability. Ivent pretends to move logging from author to users
 
 ## Installation
 
