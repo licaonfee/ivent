@@ -12,6 +12,7 @@ type Async struct {
 	c       chan ivent.Event
 	timeout time.Duration
 	ctx     context.Context
+	cancel  context.CancelFunc
 }
 
 func (s *Async) sendWithTimeout(e ivent.Event) {
@@ -41,7 +42,7 @@ func (s *Async) Send(e ivent.Event) {
 		go s.sendWithTimeout(e)
 		return
 	}
-	s.sendWithContext(e)
+	go s.sendWithContext(e)
 }
 
 //Get return a read only chanel
@@ -49,10 +50,17 @@ func (s *Async) Get() <-chan ivent.Event {
 	return s.c
 }
 
+//Close chan
+func (s *Async) Close() {
+	s.cancel()
+	close(s.c)
+}
+
 //NewAsync create a stream of events if timeout is 0 then messages never expire
-func NewAsync(ctx context.Context, timeout time.Duration) ivent.Stream {
+func NewAsync(ctx context.Context, timeout time.Duration) *Async {
 	s := &Async{}
 	s.c = make(chan ivent.Event)
 	s.timeout = timeout
+	s.ctx, s.cancel = context.WithCancel(ctx)
 	return s
 }

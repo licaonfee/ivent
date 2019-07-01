@@ -1,7 +1,7 @@
 package ivent
 
 import (
-	"log"
+	"strconv"
 	"time"
 )
 
@@ -21,7 +21,6 @@ type Event struct {
 
 //NewEvent create an event of type t qith data d and Time = Now
 func NewEvent(t Class, tags map[string]string, d interface{}) Event {
-	log.Printf("", "")
 	return Event{T: t, Data: d, Tags: tags, Time: time.Now()}
 }
 
@@ -37,4 +36,17 @@ type Client interface {
 type Stream interface {
 	//Send all implementations of this method must be concurent safe
 	Send(Event)
+}
+
+//Any default Class Interface implementation
+type Any int
+
+//Value just return int(Any)
+func (a Any) Value() int {
+	return int(a)
+}
+
+//String return Any as a numeric string
+func (a Any) String() string {
+	return strconv.Itoa(int(a))
 }
