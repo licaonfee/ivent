@@ -1,6 +1,6 @@
 # ivent
 
-Logs free debug library
+Logs as events, events as logs
 
 - [ivent](#ivent)
   - [Motivation](#Motivation)
@@ -57,7 +57,7 @@ import (
     )
 
 func main(){
-    stream := stream.NewAsyncStream()
+    stream := stream.NewSync()
     lib.logger.WithStream(stream)
 
     go func(){
