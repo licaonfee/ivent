@@ -7,7 +7,7 @@ import (
 
 //Class interface to define custom event classes
 type Class interface {
-	Value() int
+	Value() int64
 	String() string
 }
 
@@ -42,8 +42,8 @@ type Stream interface {
 type Any int
 
 //Value just return int(Any)
-func (a Any) Value() int {
-	return int(a)
+func (a Any) Value() int64 {
+	return int64(a)
 }
 
 //String return Any as a numeric string
