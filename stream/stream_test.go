@@ -103,3 +103,33 @@ func Benchmark_AsyncStream_NOTimeout(b *testing.B) {
 		async.Send(e)
 	}
 }
+
+func Benchmark_SyncStream_unbuffered(b *testing.B) {
+	b.StopTimer()
+	e := ivent.NewEvent(ivent.Any(1), map[string]string{"name": "name", "item": "1"}, []byte("foo"))
+	sync := stream.NewSync(context.Background(), 0)
+	go func() {
+		for range sync.Get() {
+
+		}
+	}()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		sync.Send(e)
+	}
+}
+
+func Benchmark_SyncStream_buffer_1000(b *testing.B) {
+	b.StopTimer()
+	e := ivent.NewEvent(ivent.Any(1), map[string]string{"name": "name", "item": "1"}, []byte("foo"))
+	sync := stream.NewSync(context.Background(), 1000)
+	go func() {
+		for range sync.Get() {
+
+		}
+	}()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		sync.Send(e)
+	}
+}
