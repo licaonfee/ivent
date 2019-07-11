@@ -15,20 +15,25 @@ import (
 type Level int64
 
 const (
-	//Panic max severity level this send event and panic
-	Panic = Level(iota)
-	//Fatal equivalent to Print and os.Exit(1) this terminate application
-	Fatal
-	//Error used to send errors that require action
-	Error
-	//Warning used to send informational non-critical messages
-	Warning
-	//Info normal function
-	Info
-	//Debug very verbose
-	Debug
-	//Trace more verbose tan Debug
-	Trace
+	//PanicLevel max severity level this send event and panic
+	PanicLevel = Level(iota)
+	//FatalLevel equivalent to Print and os.Exit(1) this terminate application
+	FatalLevel
+	//ErrorLevel used to send errors that require action
+	ErrorLevel
+	//WarningLevel used to send informational non-critical messages
+	WarningLevel
+	//InfoLevel normal function
+	InfoLevel
+	//DebugLevel very verbose
+	DebugLevel
+	//TraceLevel more verbose tan Debug
+	TraceLevel
+)
+
+//ensure interface
+var (
+	_ ivent.Class = new(Level)
 )
 
 var levels = []string{"Panic", "Fatal", "Error", "Warning", "Info", "Debug", "Trace"}
@@ -82,7 +87,7 @@ func (l *Logger) send(e ivent.Event) {
 }
 
 func (l *Logger) Trace(msg ...interface{}) {
-	l.send(l.logEvent(Trace, l.tags, msg))
+	l.send(l.logEvent(TraceLevel, l.tags, msg))
 }
 
 func (l *Logger) Tracef(format string, msg ...interface{}) {
@@ -90,7 +95,7 @@ func (l *Logger) Tracef(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Debug(msg ...interface{}) {
-	l.send(l.logEvent(Debug, l.tags, msg))
+	l.send(l.logEvent(DebugLevel, l.tags, msg))
 }
 
 func (l *Logger) Debugf(format string, msg ...interface{}) {
@@ -98,7 +103,7 @@ func (l *Logger) Debugf(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Info(msg ...interface{}) {
-	l.send(l.logEvent(Info, l.tags, msg))
+	l.send(l.logEvent(InfoLevel, l.tags, msg))
 }
 
 func (l *Logger) Infof(format string, msg ...interface{}) {
@@ -106,7 +111,7 @@ func (l *Logger) Infof(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Warning(msg ...interface{}) {
-	l.send(l.logEvent(Warning, l.tags, msg))
+	l.send(l.logEvent(WarningLevel, l.tags, msg))
 }
 
 func (l *Logger) Warningf(format string, msg ...interface{}) {
@@ -114,7 +119,7 @@ func (l *Logger) Warningf(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Error(msg ...interface{}) {
-	l.send(l.logEvent(Error, l.tags, msg))
+	l.send(l.logEvent(ErrorLevel, l.tags, msg))
 }
 
 func (l *Logger) Errorf(format string, msg ...interface{}) {
@@ -122,7 +127,7 @@ func (l *Logger) Errorf(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Fatal(msg ...interface{}) {
-	l.send(l.logEvent(Fatal, l.tags, msg))
+	l.send(l.logEvent(FatalLevel, l.tags, msg))
 	os.Exit(1)
 }
 
@@ -131,7 +136,7 @@ func (l *Logger) Fatalf(format string, msg ...interface{}) {
 }
 
 func (l *Logger) Panic(msg ...interface{}) {
-	l.send(l.logEvent(Panic, l.tags, msg))
+	l.send(l.logEvent(PanicLevel, l.tags, msg))
 	panic(msg)
 }
 
@@ -144,7 +149,7 @@ func NewLogger() *Logger {
 	l.tags = make(map[string]string)
 	l.stream = stream.NewNoop()
 	l.lv = new(Level)
-	*l.lv = Info
+	*l.lv = InfoLevel
 	return l
 }
 
