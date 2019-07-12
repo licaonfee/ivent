@@ -31,3 +31,7 @@ func Debug(msg ...interface{}) {
 func Trace(msg ...interface{}) {
 	defLog.Trace(msg...)
 }
+
+func Default() *Logger {
+	return defLog
+}
